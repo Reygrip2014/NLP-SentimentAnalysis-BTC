@@ -1,0 +1,7 @@
+import numpy as np
+import pandas as np
+
+a=3
+b=5
+c= a*b
+print(c)
