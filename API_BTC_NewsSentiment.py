@@ -5,6 +5,8 @@
 # pip install newsapi-python
 # pip install -U textblob  //not sure what the -U flag is meant to do..
 from newsapi import NewsApiClient
+import seaborn as sns
+import matplotlib.pyplot as plt
 import csv
 from nltk.util import Index
 import pandas as pd
@@ -48,9 +50,7 @@ datanew.plot(kind='line')
 plt.show()
 datanew.shape
 datanew.info()
-import seaborn as sns
-import matplotlib.pyplot as plt
+
 #ax = plt.gca()
-plt.show()
 
 #plotten gaat fout omdat 'date' niet echt in de df zit als kolomnaam
