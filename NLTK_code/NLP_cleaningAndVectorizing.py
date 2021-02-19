@@ -15,7 +15,7 @@ messages = messages.rename(columns={'v1': 'label', 'v2': 'text'})
 #checking the balance or target var
 messages['label'].value_counts()
 
-#checking for missing values
+# #checking for missing values
 #messages['label'].isnull().sum()
 #messages['text'].isnull().sum()
 messages.isnull().sum(axis = 0)
@@ -67,18 +67,45 @@ def clean_text(text):
     text = [word for word in tokenized_text if word not in stopwords]
     return text
 
-#new_text_list = clean_text(messages['text'])
+new_text_list = clean_text(messages['text'])
 #new_text_list[:10]
-
+len(new_text_list)
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 tfidf_vect = TfidfVectorizer(analyzer=clean_text)
 x_tfidf = tfidf_vect.fit_transform(messages['text'])
-x_tfidf.shape
+
 #print(tfidf_vect.get_feature_names())
-print(x_tfidf)
+x_tfidf.shape
 type(x_tfidf)
 
 x_features = pd.DataFrame(x_tfidf.toarray())
 x_features.head()
+
+
+from sklearn.ensemble import RandomForestClassifier
+print(RandomForestClassifier())
+
+# Import the methods that will be needed to evaluate a basic model
+from sklearn.metrics import precision_score, recall_score
+from sklearn.model_selection import train_test_split
+
+# Split data into training and test sets
+X_train, X_test, y_train, y_test = train_test_split(x_features,
+                                                    messages['label'],
+                                                    test_size=0.2)
+
+
+# Fit a basic Random Forest model
+rf = RandomForestClassifier()
+rf_model = rf.fit(X_train, y_train)
+
+# Make predictions on the test set using the fit model
+y_pred = rf_model.predict(X_test)
+
+# Evalute model predictions using precision and recall
+precision = precision_score(y_test, y_pred, pos_label='spam')
+recall = recall_score(y_test, y_pred, pos_label='spam')
+print('Precision: {} / Recall: {}'.format(round(precision, 3), round(recall, 3)))
+                                                    
