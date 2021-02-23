@@ -3,7 +3,7 @@
 
 #reqs:
 # pip install newsapi-python
-# pip install -U textblob  //not sure what the -U flag is meant to do.. (did not use it and all works fine)
+# pip install -U textblob
 from newsapi import NewsApiClient
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -29,6 +29,17 @@ btc_content_df['date'] = btc_content_df.apply(lambda x: parser.parse(x['publishe
 #content_df['time'] = content_df.apply(lambda x: parser.parse(x['publishedAt']).strftime('%H:%M'), axis=1)
 btc_content_df['polarity'] = btc_content_df.apply(lambda x: TextBlob(x['description']).sentiment.polarity, axis=1)
 #content_df['subjectivity'] = content_df.apply(lambda x: TextBlob(x['description']).sentiment.subjectivity, axis=1)
+
+
+#########################################
+##### testing some words ##############
+#from textblob.sentiments import NaiveBayesAnalyzer
+#alt = TextBlob('this thing is great', analyzer=NaiveBayesAnalyzer())
+alt = TextBlob('this thing is great')
+alt.sentiment
+#learnings: the pattern analyzer misses a lot like 'to the moon' and 'will rise', and 'rally', bullish and bearish etc 
+
+
 
 
 
@@ -113,7 +124,7 @@ def append_df_to_excel(filename, df, sheet_name='Sheet1', startrow=None,
     # save the workbook
     writer.save()
 
-append_df_to_excel(r'project_datacoll/XLS_files/test444.xlsx', btc_content_df, header=None, index=False)
+append_df_to_excel(r'XLS_files/test444.xlsx', btc_content_df, header=None, index=False)
 
 
 
@@ -128,11 +139,12 @@ append_df_to_excel(r'project_datacoll/XLS_files/test444.xlsx', btc_content_df, h
 # next steps would be to find a good weight (e.g. number of readers) to create a weigthed average of positivty scores
 # and then plot it against bitcoin historical price data
 btc_content_df.head(1)
+btc_content_df.shape
 
 #content_df.groupby('date')['polarity'].mean().plot(kind='line')
 datanew = btc_content_df.groupby(by = 'date').mean()
 datanew.plot(kind='line')
 plt.show()
 
-datanew.to_excel(r'project_datacoll/XLS_files/test_datanew.xlsx', index = True)
+datanew.to_excel(r'XLS_files/test_datanew.xlsx', index = True)
 
